@@ -1,0 +1,21 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: "master"
+    static_configs:
+      - targets:
+          - "localhost:9100"
+        labels:
+          role: "master"
+
+  - job_name: "compute-nodes"
+    static_configs:
+      - targets:
+          - "compute-node-01:9100"
+          - "compute-node-02:9100"
+          - "compute-node-03:9100"
+          - "compute-node-04:9100"
+        labels:
+          role: "compute"

@@ -1,4 +1,5 @@
 import subprocess
+from pathlib import Path
 
 """The idea with this code is to check the throttling status of the 
     Raspberry Pi using the vcgencmd command.
@@ -31,11 +32,27 @@ def get_throttling_status():
         "soft_temp_limit_occurred": 19,
     }
 
+    
+
+     # Directory monitored by the Node Exporter textfile collector
+    output_file = Path(
+        "/var/lib/prometheus/node-exporter/throttling.prom"
+    )
+
+    # Convert each flag into a Prometheus metric
+    metrics = []
+
     # goes through each flag and checkes if the status flag i active, 
     # prints whether a flad is active (1) or inactive (0)
     for name, bit in flags.items():
         value = int(bool(status & (1 << bit)))
         print(f"{name}: {value}")
 
+        metrics.append(
+            f"rpi_{name} {value}\n"
+        )
+
+    # Save measurements in Prometheus format
+    output_file.write_text("".join(metrics))
 
 get_throttling_status()

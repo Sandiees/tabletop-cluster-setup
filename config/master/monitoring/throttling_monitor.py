@@ -1,5 +1,6 @@
 import subprocess
-from pathlib import Path
+import os
+import tempfile
 
 """The idea with this code is to check the throttling status of the 
     Raspberry Pi using the vcgencmd command.
@@ -8,6 +9,11 @@ from pathlib import Path
     It then prints out the status of each flag, 
     indicating whether it is active (1) or inactive (0).
 """
+
+def main():
+    throttling_status = get_throttling_status()
+    send_to_prometheus(throttling_status)
+
 
 def get_throttling_status():
     # executing a Raspberry Pi vcgencmd command to get 
@@ -32,27 +38,50 @@ def get_throttling_status():
         "soft_temp_limit_occurred": 19,
     }
 
-    
+    # Decode each status bit
+    measurements = {}
 
-     # Directory monitored by the Node Exporter textfile collector
-    output_file = Path(
-        "/var/lib/prometheus/node-exporter/throttling.prom"
-    )
-
-    # Convert each flag into a Prometheus metric
-    metrics = []
-
-    # goes through each flag and checkes if the status flag i active, 
-    # prints whether a flad is active (1) or inactive (0)
     for name, bit in flags.items():
         value = int(bool(status & (1 << bit)))
+        measurements[name] = value
         print(f"{name}: {value}")
 
-        metrics.append(
-            f"rpi_{name} {value}\n"
+    return measurements
+
+
+def send_to_prometheus(measurements):
+    OUTPUT = "/var/lib/prometheus/node-exporter/throttling.prom"
+
+    metrics = ""
+
+    for name, value in measurements.items():
+        metric_name = f"rpi_{name}"
+
+        metrics += (
+            f"# TYPE {metric_name} gauge\n"
+            f"{metric_name} {value}\n"
         )
 
-    # Save measurements in Prometheus format
-    output_file.write_text("".join(metrics))
+    # Write safely using a temporary file
+    directory = os.path.dirname(OUTPUT)
+    fd, temporary = tempfile.mkstemp(dir=directory)
 
-get_throttling_status()
+    try:
+        with os.fdopen(fd, "w") as file:
+            file.write(metrics)
+
+        # Allow Node Exporter to read the file
+        os.chmod(temporary, 0o644)
+
+        # Atomically replace the old metrics file
+        os.replace(temporary, OUTPUT)
+
+    except Exception:
+        if os.path.exists(temporary):
+            os.remove(temporary)
+        raise
+
+
+if __name__ == "__main__":
+    main()
+

@@ -1,10 +1,12 @@
 #!/bin/bash
 set -euo pipefail
 
-REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-if [[ $EUID -ne 0 ]]; then
-    echo "Please run this script with sudo."
+if [[ "$EUID" -ne 0 ]]; then
+    echo "Please run with sudo:"
+    echo "  sudo bash setup.sh master"
+    echo "  sudo bash setup.sh compute"
     exit 1
 fi
 
@@ -12,11 +14,10 @@ ROLE="${1:-}"
 
 case "$ROLE" in
     master)
-        bash "$REPO_DIR/scripts/master/setup.sh"
+        bash "$SCRIPT_DIR/scripts/master/setup.sh"
         ;;
     compute)
-        echo "Compute-node setup has not been implemented yet."
-        exit 1
+        bash "$SCRIPT_DIR/scripts/compute/setup.sh"
         ;;
     *)
         echo "Usage: sudo bash setup.sh {master|compute}"

@@ -12,12 +12,12 @@ sudo apt install git -y
 
 Clone the repository
 ```
-git clone https://github.com/YOUR_USERNAME/raspberry-pi-config.git
+git clone https://github.com/sandiees/tabletop-cluster-setup.git
 ``` 
 
 Enter the repository and run the master setup
 ```
-cd raspberry-pi-config
+cd tabletop-cluster-setup
 sudo bash setup.sh master
 ```
 

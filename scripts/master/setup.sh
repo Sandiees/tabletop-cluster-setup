@@ -10,8 +10,9 @@ echo "======================================"
 echo "[1/9] Installing common packages..."
 bash "$SCRIPT_DIR/../common/install_packages.sh"
 
-echo "[2/9] Configuring NFS..."
-bash "$SCRIPT_DIR/configure_nfs.sh"
+# echo "[2/9] Configuring NFS..."
+# bash "$SCRIPT_DIR/configure_nfs.sh"
+echo "[2/9] Skipping NFS configuration. Not implemented yet."
 
 echo "[3/9] Configuring Lmod..."
 bash "$SCRIPT_DIR/configure_lmod.sh"

@@ -15,8 +15,9 @@ if [[ ! -f "$MANIFEST" ]]; then
     exit 1
 fi
 
-if ! command -v modulecmd >/dev/null 2>&1; then
-    echo "ERROR: Lmod modulecmd is not installed."
+if ! command -v lmod >/dev/null 2>&1; then
+    echo "ERROR: Lmod executable not found."
+    echo "Check installation with: dpkg -L lmod"
     exit 1
 fi
 
@@ -63,7 +64,7 @@ while IFS='|' read -r module_file check_command; do
 
     echo "Validating Lmod module: $module_name"
 
-    if ! MODULEPATH="$DEST_DIR" modulecmd bash load "$module_name" >/dev/null; then
+    if ! MODULEPATH="$DEST_DIR" lmod bash load "$module_name" >/dev/null; then
         echo "ERROR: Lmod could not load $module_name"
         exit 1
     fi

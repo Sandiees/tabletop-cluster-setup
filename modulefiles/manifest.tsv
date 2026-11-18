@@ -1,0 +1,4 @@
+# Modulefile path relative to modulefiles/ | Software validation command
+python/3.lua|python3 --version
+openmpi/system.lua|mpirun --version
+mpi4py/system.lua|python3 -c "import mpi4py"

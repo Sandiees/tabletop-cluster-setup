@@ -1,0 +1,5 @@
+username,fullname,uid,group,gid,password
+student-1,Student One,2001,course,2000,CHANGE-THIS-PASSWORD
+student-2,Student Two,2002,course,2000,CHANGE-THIS-PASSWORD
+student-3,Student Three,2003,course,2000,CHANGE-THIS-PASSWORD
+student-4,Student Four,2004,course,2000,CHANGE-THIS-PASSWORD

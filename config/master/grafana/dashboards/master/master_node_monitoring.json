@@ -17,12 +17,12 @@
       "grafana.app/managedBy": "classic-file-provisioning",
       "grafana.app/managerId": "Raspberry Pi Cluster",
       "grafana.app/sourceChecksum": "ef91e3b994634c3514ea2a1a3005ccb4",
-      "grafana.app/sourcePath": "/var/lib/grafana/dashboards/cluster/cluster-overview.json",
+      "grafana.app/sourcePath": "/var/lib/grafana/dashboards/master/master_node_monitoring.json",
       "grafana.app/sourceTimestamp": "1795010170000",
       "grafana.app/updatedBy": "access-policy:service",
       "grafana.app/updatedTimestamp": "2026-11-18T15:20:11Z",
-      "grafana.app/folderTitle": "cluster",
-      "grafana.app/folderUrl": "/dashboards/f/ag4ohqbz7j4e8f/cluster"
+      "grafana.app/folderTitle": "master",
+      "grafana.app/folderUrl": "/dashboards/f/ag4ohqbz7j4e8f/master"
     }
   },
   "spec": {

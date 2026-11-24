@@ -38,8 +38,7 @@ def Aging_Acceleration_factor(temperature_c):
 
     # Calculate thermal aging acceleration relative to the reference
     aging_factor = math.exp(
-        (E_A / K_B) * ((1 / T_ref) - (1 / T_cpu))
-    )
+        (E_A / K_B) * ((1 / T_ref) - (1 / T_cpu)))
 
     print(f"CPU Aging Acceleration Factor: {aging_factor:.3f}x")
 

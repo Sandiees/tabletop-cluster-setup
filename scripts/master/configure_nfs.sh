@@ -2,10 +2,17 @@
 set -euo pipefail
 
 SHARED_DIR="/shared"
-EXPORT_FILE="/etc/exports.d/cluster.exports"
+EXPORT_DIR="/etc/exports.d"
+EXPORT_FILE="$EXPORT_DIR/cluster.exports"
 CLUSTER_NETWORK="10.42.0.0/24"
 
 echo "Configuring NFS server..."
+
+# Ensure the script is running as root
+if [[ "$EUID" -ne 0 ]]; then
+    echo "ERROR: Please run this script as root (using sudo)."
+    exit 1
+fi
 
 # Check that the private cluster interface is configured
 if ! ip -4 addr show dev eth0 | grep -q "10.42.0.1/24"; then
@@ -22,6 +29,9 @@ apt-get install -y nfs-kernel-server
 install -d -m 0755 "$SHARED_DIR"
 install -d -m 0755 "$SHARED_DIR/modulefiles"
 install -d -m 0755 "$SHARED_DIR/examples"
+
+# Create the NFS exports directory
+mkdir -p "$EXPORT_DIR"
 
 # Configure the export
 cat > "$EXPORT_FILE" <<EOF

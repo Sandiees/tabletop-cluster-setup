@@ -46,4 +46,9 @@ sudo bash setup.sh master
 ```
 
 
+## Running the setup on the compute nodes
 
+Start the same way as with the master node, except make its hostname compute-node-XX (change XX to a number, for example 01 for the first one). Then after cloning the repository, run the setup with
+```
+sudo bash setup.sh compute
+```

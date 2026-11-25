@@ -5,16 +5,11 @@ import os
 import tempfile
 
 
-# ============================================================
-# MODEL PARAMETERS — MUST BE CALIBRATED
-# ============================================================
-
 DEVICE = "mmcblk0"
 
 SAMPLE_INTERVAL = 10  # Seconds
 
-# TODO: Replace with reference measured on each worker node.
-# Previous Raspberry Pi 3 idle baseline (bytes/second).
+
 REFERENCE_WRITE_RATE = 16159.81
 
 OUTPUT = "/var/lib/prometheus/node-exporter/microsd_aging.prom"

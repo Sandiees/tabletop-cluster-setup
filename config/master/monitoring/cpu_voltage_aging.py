@@ -7,15 +7,11 @@ import re
 import tempfile
 
 
-# ============================================================
-# MODEL PARAMETERS — PROVISIONAL, MUST BE REVIEWED
-# ============================================================
-
 K_B = 8.617333262145e-5  # Boltzmann constant (eV/K)
-E_A = 0.5                 # TODO: Validate BTI activation energy
-M = 2.0                   # TODO: Validate voltage-stress exponent
-T_REF_C = 40.0            # TODO: Define reference temperature
-V_REF_V = 0.75106150      # TODO: Measure stable reference voltage
+E_A = 0.5                
+M = 2.0               
+T_REF_C = 47            
+V_REF_V = 0.778470      
 
 OUTPUT = "/var/lib/prometheus/node-exporter/cpu_voltage_aging.prom"
 

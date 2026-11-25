@@ -5,17 +5,13 @@ import os
 import tempfile
 
 
-# ============================================================
-# MODEL PARAMETERS — MUST BE CALIBRATED
-# ============================================================
-
 DEVICE = "nvme0n1"
 
 SAMPLE_INTERVAL = 10  # Seconds
 
 # TODO: Replace with measured NVMe reference write rate.
 # 1 MB/s is only a provisional example, not a measured baseline.
-REFERENCE_WRITE_RATE = 1_000_000  # Bytes/second
+REFERENCE_WRITE_RATE = 47363.37  # Bytes/second
 
 OUTPUT = "/var/lib/prometheus/node-exporter/nvme_aging.prom"
 

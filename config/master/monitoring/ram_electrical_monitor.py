@@ -4,11 +4,6 @@ import re
 import os
 import tempfile
 
-
-# ============================================================
-# RAM ELECTRICAL MONITORING — RASPBERRY PI 5
-# ============================================================
-
 OUTPUT = "/var/lib/prometheus/node-exporter/ram_electrical.prom"
 
 

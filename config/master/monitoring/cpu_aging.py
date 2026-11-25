@@ -30,7 +30,7 @@ def Aging_Acceleration_factor(temperature_c):
     # Constants for the Arrhenius aging model
     K_B = 8.617333262145e-5  # Boltzmann constant (eV/K)
     E_A = 0.5                 # Assumed activation energy (eV)
-    T_REF_C = 40.0            # Reference temperature (Celsius)
+    T_REF_C = 47            # Reference temperature (Celsius)
 
     # Convert temperatures from Celsius to Kelvin
     T_cpu = temperature_c + 273.15
@@ -49,7 +49,7 @@ def send_to_prometheus(aging_factor):
     OUTPUT = "/var/lib/prometheus/node-exporter/cpu_aging.prom"
 
     # Create Prometheus-compatible metric
-    metrics = f"""# HELP rpi_cpu_aging_factor Estimated CPU thermal aging acceleration relative to 40 Celsius
+    metrics = f"""# HELP rpi_cpu_aging_factor Estimated CPU thermal aging acceleration relative to 47 Celsius
 # TYPE rpi_cpu_aging_factor gauge
 rpi_cpu_aging_factor {aging_factor:.6f}
 """

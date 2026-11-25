@@ -7,16 +7,14 @@ import tempfile
 from pathlib import Path
 
 
-# ============================================================
-# MODEL PARAMETERS — PROVISIONAL, MUST BE REVIEWED
-# ============================================================
-
 K_B = 8.617333262145e-5  # Boltzmann constant (eV/K)
 
-E_A = 0.5                 # TODO: Replace with mechanism-specific value
-N = 2.0                   # TODO: Validate current-stress exponent
-T_REF_C = 40.0            # TODO: Define reference operating temperature
-I_REF_A = 0.45543         # TODO: Measure stable reference current
+E_A = 0.5                 # Assumption from Black's electromigration equation
+                          # Activation energy describing how sensitive electromigration is to temperature
+N = 2.0                   # Assumption from Black's electromigration equation
+                          # Current-stress exponent describing how strongly electromigration responds to increased
+T_REF_C = 47           
+I_REF_A = 0.662308       
 
 OUTPUT = "/var/lib/prometheus/node-exporter/cpu_electromigration.prom"
 

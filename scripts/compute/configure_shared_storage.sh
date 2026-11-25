@@ -2,7 +2,7 @@
 set -euo pipefail
 
 SHARED_DIR="/shared"
-NFS_EXPORT="master:/shared"
+NFS_EXPORT="10.42.0.1:/shared"
 FSTAB_ENTRY="$NFS_EXPORT $SHARED_DIR nfs defaults,_netdev,x-systemd.automount 0 0"
 
 apt-get install -y nfs-common

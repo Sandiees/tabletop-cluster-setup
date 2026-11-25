@@ -7,32 +7,43 @@ echo "======================================"
 echo " Starting master-node configuration"
 echo "======================================"
 
-echo "[1/9] Installing common packages..."
+echo "Installing common packages..."
 bash "$SCRIPT_DIR/../common/install_packages.sh"
 
-# echo "[2/9] Configuring NFS..."
-# bash "$SCRIPT_DIR/configure_nfs.sh"
-echo "[2/9] Skipping NFS configuration. Not implemented yet."
+echo "======================================"
+echo "Configuring network sharing..."
+bash "$SCRIPT_DIR/configure_network_sharing.sh"
 
-echo "[3/9] Configuring Lmod..."
+echo "======================================"
+echo "Configuring NFS..."
+bash "$SCRIPT_DIR/configure_nfs.sh"
+
+echo "======================================"
+echo "Configuring Lmod..."
 bash "$SCRIPT_DIR/configure_lmod.sh"
 
-echo "[4/9] Installing modulefiles..."
+echo "======================================"
+echo "Installing modulefiles..."
 bash "$SCRIPT_DIR/install_modulefiles.sh"
 
-echo "[5/9] Configuring Munge..."
+echo "======================================"
+echo "Configuring Munge..."
 bash "$SCRIPT_DIR/configure_munge.sh"
 
-echo "[6/9] Configuring Slurm controller..."
+echo "======================================"
+echo "Configuring Slurm controller..."
 bash "$SCRIPT_DIR/configure_slurm.sh"
 
-echo "[7/9] Installing Prometheus..."
+echo "======================================"
+echo "Installing Prometheus..."
 bash "$SCRIPT_DIR/install_prometheus.sh"
 
-echo "[8/9] Installing Grafana..."
+echo "======================================"
+echo "Installing Grafana..."
 bash "$SCRIPT_DIR/install_grafana.sh"
 
-echo "[9/9] Installing Slurm examples..."
+echo "======================================"
+echo "Installing Slurm examples..."
 bash "$SCRIPT_DIR/install_slurm_examples.sh"
 
 echo "======================================"

@@ -10,6 +10,8 @@ echo "======================================"
 echo "Installing common packages..."
 bash "$SCRIPT_DIR/../common/install_packages.sh"
 
+bash "$SCRIPT_DIR/../common/configure_hosts.sh"
+
 echo "======================================"
 echo "Configuring network sharing..."
 bash "$SCRIPT_DIR/configure_network_sharing.sh"

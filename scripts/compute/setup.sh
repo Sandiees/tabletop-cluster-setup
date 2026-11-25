@@ -14,9 +14,9 @@ echo " Configuring compute node: $(hostname)"
 echo "======================================"
 
 # Install common software
-bash "$REPO_DIR/scripts/scripts/common/install_packages.sh"
+bash "$REPO_DIR/scripts/common/install_packages.sh"
 
-bash "$REPO_DIR/common/configure_hosts.sh"
+bash "$REPO_DIR/scripts/common/configure_hosts.sh"
 
 bash "$SCRIPT_DIR/configure_network.sh"
 

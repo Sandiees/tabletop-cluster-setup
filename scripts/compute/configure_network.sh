@@ -14,8 +14,14 @@ case "$HOSTNAME" in
         ;;
 esac
 
-CONNECTION=$(nmcli -t -f NAME,DEVICE connection show --active |
-    awk -F: '$2 == "eth0" {print $1; exit}')
+CONNECTION=$(
+    nmcli -t -f NAME,DEVICE connection show --active |
+    awk -F: '$NF == "eth0" {
+        sub(/:eth0$/, "")
+        print
+        exit
+    }'
+)
 
 if [[ -z "$CONNECTION" ]]; then
     echo "No active NetworkManager connection found for eth0."

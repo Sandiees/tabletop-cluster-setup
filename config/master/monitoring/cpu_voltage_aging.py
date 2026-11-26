@@ -24,7 +24,7 @@ def main():
         temperature, voltage
     )
 
-    send_to_prometheus(aging_factor)
+    send_to_prometheus(aging_factor, voltage)
 
 
 def CPU_Temperature():
@@ -92,11 +92,14 @@ def Aging_Acceleration_factor(temperature_c, voltage_v):
     return aging_factor
 
 
-def send_to_prometheus(aging_factor):
+def send_to_prometheus(aging_factor, voltage):
     # Path monitored by Node Exporter
     metrics = f"""# HELP rpi_cpu_bti_proxy_factor Experimental voltage-and-temperature stress acceleration proxy
 # TYPE rpi_cpu_bti_proxy_factor gauge
 rpi_cpu_bti_proxy_factor {aging_factor:.6f}
+# HELP rpi_cpu_core_voltage_volts Measured CPU core supply voltage
+# TYPE rpi_cpu_core_voltage_volts gauge
+rpi_cpu_core_voltage_volts {voltage:.6f}
 """
 
     directory = os.path.dirname(OUTPUT)

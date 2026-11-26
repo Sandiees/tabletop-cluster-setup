@@ -22,6 +22,7 @@ bash "$SCRIPT_DIR/configure_network.sh"
 
 # Mount the shared filesystem
 bash "$SCRIPT_DIR/configure_shared_storage.sh"
+bash "$SCRIPT_DIR/configure_home_storage.sh"
 
 # Configure Munge authentication
 bash "$SCRIPT_DIR/configure_munge.sh"

@@ -27,7 +27,7 @@ def main():
         temperature, current
     )
 
-    send_to_prometheus(aging_factor)
+    send_to_prometheus(aging_factor, current)
 
 
 def CPU_Temperature():
@@ -89,10 +89,13 @@ def Aging_Acceleration_factor(temperature_c, current_a):
     return aging_factor
 
 
-def send_to_prometheus(aging_factor):
+def send_to_prometheus(aging_factor, current):
     metrics = f"""# HELP rpi_cpu_em_proxy_factor Experimental current-and-temperature stress acceleration proxy
 # TYPE rpi_cpu_em_proxy_factor gauge
 rpi_cpu_em_proxy_factor {aging_factor:.6f}
+# HELP rpi_cpu_core_current_amperes Measured CPU core supply current
+# TYPE rpi_cpu_core_current_amperes gauge
+rpi_cpu_core_current_amperes {current:.6f}
 """
 
     directory = os.path.dirname(OUTPUT)

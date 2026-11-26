@@ -19,19 +19,19 @@ apt-get install -y nfs-common
 
 install -d -m 0755 "$MOUNT_POINT"
 
-# Do not hide existing local home directories under the NFS mount.
-if ! mountpoint -q "$MOUNT_POINT"; then
-    if find "$MOUNT_POINT" -mindepth 1 -maxdepth 1 -print -quit | grep -q .; then
-        echo "ERROR: $MOUNT_POINT contains local files."
-        echo "Back them up or migrate them before mounting the shared home directory."
-        exit 1
-    fi
+# Remove any existing local home directories on the compute node.
+# Do not delete anything if /home is already mounted.
+if mountpoint -q "$MOUNT_POINT"; then
+    echo "/home is already mounted. Keeping the existing mount."
+else
+    echo "Removing existing local contents of /home..."
+    find "$MOUNT_POINT" -mindepth 1 -maxdepth 1 -exec rm -rf -- {} +
 fi
 
 # Avoid accidentally creating duplicate or conflicting /home entries.
 if grep -qE '^[^#].*[[:space:]]/home[[:space:]]' "$FSTAB_FILE"; then
     if ! grep -qF "$FSTAB_ENTRY" "$FSTAB_FILE"; then
-        echo "ERROR: /etc/fstab already contains a /home mount entry."
+        echo "ERROR: /etc/fstab already contains a conflicting /home mount entry."
         echo "Please check it and replace it with:"
         echo "$FSTAB_ENTRY"
         exit 1

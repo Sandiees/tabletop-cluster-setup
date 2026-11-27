@@ -249,7 +249,7 @@ SCP_OPTIONS=(
 )
 
 runuser -u "$SSH_USER" -- \
-    scp "${SSH_OPTIONS[@]}" "$TEMP_KEY" \
+    scp "${SCP_OPTIONS[@]}" "$TEMP_KEY" \
     "$REMOTE_USER@$NODE_IP:/tmp/munge.key"
 
 ssh_admin "$NODE_IP" \

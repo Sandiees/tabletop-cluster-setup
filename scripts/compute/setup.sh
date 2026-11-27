@@ -17,7 +17,7 @@ echo "======================================"
 bash "$REPO_DIR/scripts/common/install_packages.sh"
 
 # Prevent cloud-init from overwriting /etc/hosts.
-bash "$SCRIPT_DIR/scripts/common/configure_hosts_persistence.sh"
+bash "$REPO_DIR/scripts/common/configure_hosts_persistence.sh"
 
 # Configure cluster hostname resolution.
 bash "$REPO_DIR/scripts/common/configure_hosts.sh"

@@ -1,3 +1,4 @@
+
 #!/bin/bash
 set -euo pipefail
 
@@ -117,7 +118,10 @@ echo "Found $NODE at $DISCOVERY_IP."
 
 echo "Configuring static IP $NODE_IP..."
 
-# The SSH connection is expected to drop when eth0 changes address.
+# Save the static configuration first.
+# Schedule activation separately so the SSH session can exit
+# before NetworkManager interrupts the existing connection.
+
 ssh_admin "$DISCOVERY_IP" \
     "sudo -n bash -s -- '$NODE_IP' '$MASTER_IP'" <<'REMOTE'
 set -euo pipefail
@@ -154,7 +158,15 @@ nmcli connection modify "$CONNECTION" \
     ipv4.dns "$MASTER_IP" \
     ipv6.method disabled
 
-nmcli connection up "$CONNECTION"
+echo "Static configuration saved."
+
+# Activate the connection after this SSH command has returned.
+systemd-run \
+    --on-active=2s \
+    --collect \
+    /usr/bin/nmcli connection up "$CONNECTION"
+
+echo "Network reconfiguration scheduled."
 REMOTE
 
 # ------------------------------------------------
@@ -171,6 +183,7 @@ while (( SECONDS < DEADLINE )); do
         CONNECTED=1
         break
     fi
+
     sleep 3
 done
 
@@ -201,12 +214,21 @@ runuser -u "$SSH_USER" -- rsync -az \
     --delete \
     --exclude='.git/' \
     --exclude='__pycache__/' \
-    -e "ssh -i $SSH_KEY -p $SSH_PORT -o StrictHostKeyChecking=accept-new -o UserKnownHostsFile=$KNOWN_HOSTS" \
+    -e "ssh -i $SSH_KEY -p $SSH_PORT -o BatchMode=yes -o StrictHostKeyChecking=accept-new -o UserKnownHostsFile=$KNOWN_HOSTS" \
     "$REPO_DIR/" \
     "$REMOTE_USER@$NODE_IP:$REMOTE_REPO/"
 
 # ------------------------------------------------
-# 6. Distribute the master's Munge key
+# 6. Install packages before distributing Munge key
+# ------------------------------------------------
+
+echo "Installing required packages..."
+
+ssh_admin "$NODE_IP" \
+    "sudo -n bash '$REMOTE_REPO/scripts/common/install_packages.sh'"
+
+# ------------------------------------------------
+# 7. Distribute the master's Munge key
 # ------------------------------------------------
 
 echo "Distributing Munge key..."
@@ -222,14 +244,14 @@ runuser -u "$SSH_USER" -- \
     "$REMOTE_USER@$NODE_IP:/tmp/munge.key"
 
 ssh_admin "$NODE_IP" \
-    "sudo -n install -o munge -g munge -m 0400 /tmp/munge.key /etc/munge/munge.key &&
+    "sudo -n install -o munge -g munge -m 0400 /tmp/munge.key /etc/munge/munge.key && \
      rm -f /tmp/munge.key"
 
 rm -f "$TEMP_KEY"
 trap - EXIT
 
 # ------------------------------------------------
-# 7. Run the existing compute setup
+# 8. Run the existing compute setup
 # ------------------------------------------------
 
 echo "Running compute-node setup..."
@@ -238,16 +260,16 @@ ssh_admin "$NODE_IP" \
     "sudo -n bash '$REMOTE_REPO/scripts/compute/setup.sh'"
 
 # ------------------------------------------------
-# 8. Verify the node
+# 9. Verify the node
 # ------------------------------------------------
 
 echo
 echo "Checking node services..."
 
 ssh_admin "$NODE_IP" \
-    "systemctl is-active munge &&
-     systemctl is-enabled slurmd &&
-     mountpoint -q /shared &&
+    "systemctl is-active munge && \
+     systemctl is-enabled slurmd && \
+     mountpoint -q /shared && \
      mountpoint -q /home"
 
 echo

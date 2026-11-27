@@ -23,5 +23,6 @@ install -d -o slurm -g slurm -m 0755 "$SPOOL_DIR"
 
 # Ensure the compute daemon starts at boot
 systemctl enable slurmd
+systemctl restart slurmd
 
 echo "Slurm configured for $(hostname)."

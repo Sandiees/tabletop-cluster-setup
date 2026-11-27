@@ -20,7 +20,9 @@ services running on the master; SSH, DHCP and DNS are the exceptions.
 
 ## Setup
 
-The master setup orchestrator runs:
+Modify `DEV_CONNECTION="Your-Wi-Fi-Name"` in `scripts/master/configure_wifi_ap.sh` to contain your Wi-Fi name.
+
+Then run the master setup:
 
 ```bash
 sudo bash setup.sh master

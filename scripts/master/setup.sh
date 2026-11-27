@@ -18,6 +18,10 @@ echo "Configuring network sharing..."
 bash "$SCRIPT_DIR/configure_network_sharing.sh"
 
 echo "======================================"
+echo "Configuring student Wi-Fi access point..."
+bash "$SCRIPT_DIR/configure_wifi_ap.sh"
+
+echo "======================================"
 echo "Configuring NFS..."
 bash "$SCRIPT_DIR/configure_nfs.sh"
 

@@ -1,0 +1,13 @@
+[Unit]
+Description=Firewall restrictions for the Pi-Cluster student Wi-Fi access point
+After=NetworkManager.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStartPre=-/usr/sbin/nft delete table inet pi_cluster_wifi_guard
+ExecStart=/usr/sbin/nft -f /etc/pi-cluster-wifi-firewall.nft
+ExecStop=-/usr/sbin/nft delete table inet pi_cluster_wifi_guard
+
+[Install]
+WantedBy=multi-user.target

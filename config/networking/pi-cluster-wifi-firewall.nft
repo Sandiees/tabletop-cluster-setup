@@ -1,0 +1,32 @@
+#!/usr/sbin/nft -f
+
+# This table is loaded only while wlan0 is hosting the Pi-Cluster AP.
+# Students may use DHCP, DNS and SSH to the master. All other traffic
+# addressed to the master is dropped, and forwarding from wlan0 is
+# blocked so clients cannot reach the Ethernet cluster (10.42.0.0/24)
+# or use the master as an internet gateway.
+
+table inet pi_cluster_wifi_guard {
+    chain input {
+        type filter hook input priority -10; policy accept;
+
+        iifname "wlan0" ct state established,related accept
+
+        # NetworkManager shared-mode DHCP and DNS services.
+        iifname "wlan0" udp dport { 53, 67 } accept
+        iifname "wlan0" tcp dport 53 accept
+
+        # SSH to the master.
+        iifname "wlan0" tcp dport 22 accept
+
+        # No other access to services on the master from student Wi-Fi.
+        iifname "wlan0" drop
+    }
+
+    chain forward {
+        type filter hook forward priority -10; policy accept;
+
+        # Prevent access to compute nodes and prevent internet forwarding.
+        iifname "wlan0" drop
+    }
+}

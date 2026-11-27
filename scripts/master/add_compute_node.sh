@@ -219,13 +219,21 @@ runuser -u "$SSH_USER" -- rsync -az \
     "$REMOTE_USER@$NODE_IP:$REMOTE_REPO/"
 
 # ------------------------------------------------
-# 6. Install packages before distributing Munge key
+# 6. Install packages
 # ------------------------------------------------
 
 echo "Installing required packages..."
 
 ssh_admin "$NODE_IP" \
     "sudo -n bash '$REMOTE_REPO/scripts/common/install_packages.sh'"
+
+# ------------------------------------------------
+# Configure hosts
+# ------------------------------------------------
+
+echo "Configuring hosts..."
+ssh_admin "$NODE_IP" \
+    "sudo -n bash '$REMOTE_REPO/scripts/common/configure_hosts.sh'"
 
 # ------------------------------------------------
 # 7. Distribute the master's Munge key

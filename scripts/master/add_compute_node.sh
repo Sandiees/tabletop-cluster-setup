@@ -239,6 +239,15 @@ trap 'rm -f "$TEMP_KEY"' EXIT
 install -o "$SSH_USER" -g "$(id -gn "$SSH_USER")" \
     -m 0600 "$MUNGE_KEY" "$TEMP_KEY"
 
+SCP_OPTIONS=(
+    -i "$SSH_KEY"
+    -P "$SSH_PORT"
+    -o BatchMode=yes
+    -o ConnectTimeout=5
+    -o StrictHostKeyChecking=accept-new
+    -o UserKnownHostsFile="$KNOWN_HOSTS"
+)
+
 runuser -u "$SSH_USER" -- \
     scp "${SSH_OPTIONS[@]}" "$TEMP_KEY" \
     "$REMOTE_USER@$NODE_IP:/tmp/munge.key"

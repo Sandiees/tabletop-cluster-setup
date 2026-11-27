@@ -233,6 +233,8 @@ ssh_admin "$NODE_IP" \
 
 echo "Configuring hosts..."
 ssh_admin "$NODE_IP" \
+    "sudo -n bash '$REMOTE_REPO/scripts/common/configure_hosts_persistence.sh'"
+ssh_admin "$NODE_IP" \
     "sudo -n bash '$REMOTE_REPO/scripts/common/configure_hosts.sh'"
 
 # ------------------------------------------------

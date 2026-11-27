@@ -11,7 +11,6 @@ echo "Installing common packages..."
 bash "$SCRIPT_DIR/../common/install_packages.sh"
 
 echo "Configuring hostnames..."
-bash "$SCRIPT_DIR/../common/configure_hosts_persistence.sh"
 bash "$SCRIPT_DIR/../common/configure_hosts.sh"
 
 echo "======================================"
